@@ -6,9 +6,10 @@ let g:loaded_pairify = 1
 let g:pairs = {
       \ "[": "]",
       \ "(": ")",
-      \ '"': '"',
+      \ "{": "}",
+      \ "<": ">",
       \ "'": "'",
-      \ "<": ">"
+      \ '"': '"'
       \ }
 
 function! s:Pairify(key)
