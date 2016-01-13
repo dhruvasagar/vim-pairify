@@ -33,6 +33,23 @@ function! s:Pairify(key)
   endif
 endfunction
 
+function! s:isEndOfPair()
+  let rightOfCursor = getline('.')[col('.')]
+  return index(keys(g:pairs.right), rightOfCursor) >= 0
+endfunction
+
+function! s:Pairified()
+  if s:isEndOfPair()
+    normal! l
+  endif
+endfunction
+
 for pair in values(g:pairs.left)
   exec "inoremap <silent> <expr> <script>" pair "<SID>Pairify(\"".escape(pair, "'\"")."\")"
 endfor
+
+augroup Pairify
+  au!
+
+  autocmd InsertLeave * call s:Pairified()
+augroup END
