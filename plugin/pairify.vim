@@ -33,14 +33,13 @@ function! s:Pairify(key)
   endif
 endfunction
 
-function! s:isEndOfPair()
-  let rightOfCursor = getline('.')[col('.')]
-  return index(keys(g:pairs.right), rightOfCursor) >= 0
+function! s:isEndOfPair(char)
+  return index(keys(g:pairs.right), a:char) >= 0
 endfunction
 
 function! s:Pairified()
   let rightOfCursor = getline('.')[col('.')]
-  if s:isEndOfPair()
+  if s:isEndOfPair(rightOfCursor)
     exe 'normal! f' . rightOfCursor
   endif
 endfunction
