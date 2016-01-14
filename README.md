@@ -1,4 +1,4 @@
-# vim-pairify v0.3
+# vim-pairify v0.3.1
 
 A simple plugin for pair completion such as () and [].
 
