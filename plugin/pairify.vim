@@ -39,8 +39,9 @@ function! s:isEndOfPair()
 endfunction
 
 function! s:Pairified()
+  let rightOfCursor = getline('.')[col('.')]
   if s:isEndOfPair()
-    normal! l
+    exe 'normal! f' . rightOfCursor
   endif
 endfunction
 
