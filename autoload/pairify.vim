@@ -1,8 +1,8 @@
 function! s:is_compliment(char1, char2)
-  if has_key(g:pairs.left, a:char1)
-    return a:char2 == g:pairs.left[a:char1]
-  elseif has_key(g:pairs.right, a:char1)
-    return a:char2 == g:pairs.right[a:char1]
+  if has_key(g:pairifiers.left, a:char1)
+    return a:char2 == g:pairifiers.left[a:char1]
+  elseif has_key(g:pairifiers.right, a:char1)
+    return a:char2 == g:pairifiers.right[a:char1]
   endif
 endfunction
 
@@ -15,17 +15,17 @@ function! pairify#find_pair(string)
   let characters = split(a:string, '\zs')
 
   for char in reverse(characters)
-    if has_key(g:pairs.right, char)
+    if has_key(g:pairifiers.right, char)
       if !empty(stack) && s:is_quote(char) && stack[-1] ==# char
         call remove(stack, -1)
         continue
       endif
       call add(stack, char)
-    elseif has_key(g:pairs.left, char)
+    elseif has_key(g:pairifiers.left, char)
       if !empty(stack) && s:is_compliment(char, stack[-1])
         call remove(stack, -1)
       elseif empty(stack)
-        return g:pairs.left[char]
+        return g:pairifiers.left[char]
       endif
     endif
   endfor
