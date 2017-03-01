@@ -1,8 +1,8 @@
-# vim-pairify v0.4
+# vim-pairify v0.4.1
 
-A simple plugin for pair completion such as () and []. Simply press 'tab' in
-insert mode and the plugin will identify the correct pair to be completed. It
-has support for nesting.
+A simple plugin for pair completion such as () and []. Simply press
+<kbd>\<C-J></kbd> in insert mode and the plugin will identify the correct pair
+to be completed. It has support for nesting.
 
 ## Installation
 
