@@ -30,9 +30,5 @@ function! pairify#find_pair(string)
     endif
   endfor
 
-  if empty(stack)
-    return ''
-  else
-    return remove(stack, 0)
-  endif
+  return get(stack, 0, '')
 endfunction
