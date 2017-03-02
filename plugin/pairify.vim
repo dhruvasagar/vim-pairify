@@ -22,9 +22,19 @@ let g:pairifiers = {
       \ }
       \}
 
+function! s:is_already_matched(char)
+  return index(keys(g:pairifiers.right), a:char) >= 0
+endfunction
 
 function! s:pairify()
-  return pairify#find_pair(getline('.')[0:col('.')-1])
+  let line = getline('.')
+  let cchar = line[col('.')-1]
+  let pair_match = pairify#find_pair(line[0:col('.')-1])
+  if empty(pair_match) && s:is_already_matched(cchar)
+    return "\<C-O>a"
+  else
+    return pair_match
+  endif
 endfunction
 
 inoremap <expr> <silent> <Plug>(pairify-complete) <SID>pairify()
