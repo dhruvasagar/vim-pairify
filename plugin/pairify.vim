@@ -29,8 +29,10 @@ endfunction
 function! s:pairify()
   let line = getline('.')
   let cchar = line[col('.')-1]
+  if s:is_already_matched(cchar) | return "\<C-O>a" | endif
+
   let pair_match = pairify#find_pair(line[0:col('.')-1])
-  if empty(pair_match) && s:is_already_matched(cchar)
+  if empty(pair_match)
     return "\<C-O>a"
   else
     return pair_match
@@ -38,4 +40,7 @@ function! s:pairify()
 endfunction
 
 inoremap <expr> <silent> <Plug>(pairify-complete) <SID>pairify()
-imap <C-J> <Plug>(pairify-complete)
+
+if !hasmapto('<Plug>(pairify-complete)')
+  imap <C-J> <Plug>(pairify-complete)
+endif
