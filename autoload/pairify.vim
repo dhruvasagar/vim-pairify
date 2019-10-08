@@ -7,7 +7,7 @@ function! s:is_compliment(char1, char2)
 endfunction
 
 function! s:is_quote(char)
-  return a:char ==# "'" || a:char ==# '"'
+  return a:char ==# "'" || a:char ==# '"' || a:char ==# '`'
 endfunction
 
 function! pairify#find_pair(string)
