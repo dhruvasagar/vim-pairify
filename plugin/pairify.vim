@@ -37,7 +37,8 @@ function! s:pairify()
   let cchar = line[col('.')-1]
   if s:is_already_matched(cchar) | return "\<C-O>a" | endif
 
-  let pair_match = pairify#find_pair(line[0:col('.')-1])
+  let prev_lines_string = join(add(getline(0, line('.')-1), line[0:col('.')-1]), "\n")
+  let pair_match = pairify#find_pair(prev_lines_string)
   if empty(pair_match)
     return len(g:pairify_map) == 1 ? g:pairify_map : ''
   else
