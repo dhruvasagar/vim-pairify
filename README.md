@@ -2,7 +2,7 @@
 
 A simple plugin for pair completion such as () and []. Simply press
 <kbd>\<C-J></kbd> in insert mode and the plugin will identify the correct pair
-to be completed. It has support for nesting.
+to be completed. It has support for nesting and multiline matching.
 
 ## Installation
 
