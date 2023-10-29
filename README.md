@@ -1,4 +1,4 @@
-# vim-pairify v0.5.0
+# vim-pairify v0.5.1
 
 A simple plugin for pair completion such as () and []. Simply press
 <kbd>\<C-J></kbd> in insert mode and the plugin will identify the correct pair
