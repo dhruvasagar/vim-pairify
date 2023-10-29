@@ -1,4 +1,4 @@
-# vim-pairify v0.5.1
+# vim-pairify v0.5.1 [![Build](https://github.com/dhruvasagar/vim-pairify/actions/workflows/ci.yml/badge.svg)](https://github.com/dhruvasagar/vim-pairify/actions/workflows/ci.yml)
 
 A simple plugin for pair completion such as () and []. Simply press
 <kbd>\<C-J></kbd> in insert mode and the plugin will identify the correct pair
