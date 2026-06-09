@@ -1,9 +1,10 @@
-function! s:is_compliment(char1, char2)
+function! s:is_complement(char1, char2)
   if has_key(g:pairifiers.left, a:char1)
     return a:char2 == g:pairifiers.left[a:char1]
   elseif has_key(g:pairifiers.right, a:char1)
     return a:char2 == g:pairifiers.right[a:char1]
   endif
+  return 0
 endfunction
 
 function! s:is_quote(char)
@@ -22,7 +23,7 @@ function! pairify#find_pair(string)
       endif
       call add(stack, char)
     elseif has_key(g:pairifiers.left, char)
-      if !empty(stack) && s:is_compliment(char, stack[-1])
+      if !empty(stack) && s:is_complement(char, stack[-1])
         call remove(stack, -1)
       elseif empty(stack)
         return g:pairifiers.left[char]
