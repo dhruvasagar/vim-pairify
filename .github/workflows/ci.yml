@@ -14,7 +14,7 @@ concurrency:
 
 jobs:
   tests:
-    name: Vim Table Mode Tests
+    name: vim-pairify Tests
     strategy:
       matrix:
         os: [ubuntu-latest, macos-latest]
