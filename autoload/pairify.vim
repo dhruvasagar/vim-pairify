@@ -13,16 +13,27 @@ endfunction
 
 function! pairify#find_pair(string)
   let stack = []
-  let characters = split(a:string, '\zs')
+  let chars = split(a:string, '\zs')
+  let n = len(chars)
 
-  for char in reverse(characters)
+  for i in range(n - 1, 0, -1)
+    let char = chars[i]
+
     if has_key(g:pairifiers.right, char)
+      " > preceded by a space is a comparison operator, not an angle bracket closer
+      if char ==# '>' && i > 0 && chars[i-1] ==# ' '
+        continue
+      endif
       if !empty(stack) && s:is_quote(char) && stack[-1] ==# char
         call remove(stack, -1)
         continue
       endif
       call add(stack, char)
     elseif has_key(g:pairifiers.left, char)
+      " < followed by a space is a comparison operator, not an angle bracket opener
+      if char ==# '<' && i < n-1 && chars[i+1] ==# ' '
+        continue
+      endif
       if !empty(stack) && s:is_complement(char, stack[-1])
         call remove(stack, -1)
       elseif empty(stack)
