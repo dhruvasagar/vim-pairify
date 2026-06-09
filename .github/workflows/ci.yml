@@ -20,12 +20,12 @@ jobs:
         os: [ubuntu-latest, macos-latest]
     runs-on: ${{ matrix.os }}
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           path: pack/plugins/start/vim-pairify
 
       - name: Checkout vim-testify
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           repository: dhruvasagar/vim-testify
           path: pack/plugins/start/vim-testify
