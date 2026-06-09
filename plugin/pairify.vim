@@ -31,7 +31,7 @@ if !exists('g:pairify_map')
 endif
 
 function! s:is_already_matched(char)
-  return index(keys(g:pairifiers.right), a:char) >= 0
+  return has_key(g:pairifiers.right, a:char)
 endfunction
 
 function! s:pairify()
