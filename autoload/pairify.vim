@@ -7,8 +7,8 @@ function! s:is_complement(char1, char2)
   return 0
 endfunction
 
-function! s:is_quote(char)
-  return a:char ==# "'" || a:char ==# '"' || a:char ==# '`'
+function! s:is_symmetric(char)
+  return g:pairifiers.right[a:char] ==# a:char
 endfunction
 
 function! pairify#find_pair(string)
@@ -20,17 +20,15 @@ function! pairify#find_pair(string)
     let char = chars[i]
 
     if has_key(g:pairifiers.right, char)
-      " > preceded by a space is a comparison operator, not an angle bracket closer
       if char ==# '>' && i > 0 && chars[i-1] ==# ' '
         continue
       endif
-      if !empty(stack) && s:is_quote(char) && stack[-1] ==# char
+      if !empty(stack) && s:is_symmetric(char) && stack[-1] ==# char
         call remove(stack, -1)
         continue
       endif
       call add(stack, char)
     elseif has_key(g:pairifiers.left, char)
-      " < followed by a space is a comparison operator, not an angle bracket opener
       if char ==# '<' && i < n-1 && chars[i+1] ==# ' '
         continue
       endif
