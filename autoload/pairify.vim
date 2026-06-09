@@ -13,32 +13,31 @@ endfunction
 
 function! pairify#find_pair(string)
   let stack = []
-  let chars = split(a:string, '\zs')
-  let n = len(chars)
+  let n = len(a:string)
+  let i = n - 1
 
-  for i in range(n - 1, 0, -1)
-    let char = chars[i]
+  while i >= 0
+    let char = a:string[i]
 
     if has_key(g:pairifiers.right, char)
-      if char ==# '>' && i > 0 && chars[i-1] ==# ' '
-        continue
-      endif
-      if !empty(stack) && s:is_symmetric(char) && stack[-1] ==# char
+      if char ==# '>' && i > 0 && a:string[i-1] ==# ' '
+        " comparison operator, skip
+      elseif !empty(stack) && s:is_symmetric(char) && stack[-1] ==# char
         call remove(stack, -1)
-        continue
+      else
+        call add(stack, char)
       endif
-      call add(stack, char)
     elseif has_key(g:pairifiers.left, char)
-      if char ==# '<' && i < n-1 && chars[i+1] ==# ' '
-        continue
-      endif
-      if !empty(stack) && s:is_complement(char, stack[-1])
+      if char ==# '<' && i < n - 1 && a:string[i+1] ==# ' '
+        " comparison operator, skip
+      elseif !empty(stack) && s:is_complement(char, stack[-1])
         call remove(stack, -1)
       elseif empty(stack)
         return g:pairifiers.left[char]
       endif
     endif
-  endfor
+    let i -= 1
+  endwhile
 
   return get(stack, 0, '')
 endfunction
