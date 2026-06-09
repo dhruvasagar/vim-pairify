@@ -50,7 +50,10 @@ function! s:TestFindNestedQuotes() abort
 endfunction
 call testify#it('pairify#find_pair should find nested quotes', function('s:TestFindNestedQuotes'))
 
-function! s:TestFindMultilinePairs() abort
+function! s:TestFindPairsWithNonPairChars() abort
+  " Original multiline test — uses continuation syntax so text has spaces
+  " and backslashes between pairs (not real newlines), verifying non-pair
+  " chars between brackets are correctly ignored.
   let text = '(
         \ [
         \ {
@@ -62,7 +65,20 @@ function! s:TestFindMultilinePairs() abort
     let text = text .. pair
   endfor
 endfunction
-call testify#it('pairify#find_pair should find the pair in multiline string', function('s:TestFindMultilinePairs'))
+call testify#it('pairify#find_pair should find pairs with non-pair chars between them', function('s:TestFindPairsWithNonPairChars'))
+
+function! s:TestFindPairAcrossRealNewlines() abort
+  " Double-quoted strings give actual \n characters, testing true multiline behaviour.
+  call testify#assert#equals(pairify#find_pair("(\n["), ']')
+  call testify#assert#equals(pairify#find_pair("(\n[\n{"), '}')
+  call testify#assert#equals(pairify#find_pair("(\n[\n{\n<"), '>')
+  " Fully balanced across lines returns empty
+  call testify#assert#equals(pairify#find_pair("(\n)"), '')
+  call testify#assert#equals(pairify#find_pair("(\n[\n]\n)"), '')
+  " Nested pairs partly on different lines
+  call testify#assert#equals(pairify#find_pair("(\nfoo\n[bar"), ']')
+endfunction
+call testify#it('pairify#find_pair should find pairs across real newline boundaries', function('s:TestFindPairAcrossRealNewlines'))
 
 function! s:TestFindPairEmpty() abort
   call testify#assert#equals(pairify#find_pair(''), '')
@@ -83,6 +99,8 @@ function! s:TestFindPairIgnoresComparisonOperators() abort
   call testify#assert#equals(pairify#find_pair('a > b'), '')
   " outer pair is still found when < is a comparison inside
   call testify#assert#equals(pairify#find_pair('if (a < b'), ')')
+  " chained comparisons
+  call testify#assert#equals(pairify#find_pair('a < b && c > d'), '')
 endfunction
 call testify#it('pairify#find_pair should not treat spaced < and > as angle brackets', function('s:TestFindPairIgnoresComparisonOperators'))
 
@@ -93,6 +111,9 @@ function! s:TestFindPairAngleBrackets() abort
   " balanced angle brackets
   call testify#assert#equals(pairify#find_pair('vector<int>'), '')
   call testify#assert#equals(pairify#find_pair('<div>'), '')
+  " nested generics
+  call testify#assert#equals(pairify#find_pair('Map<string,int'), '>')
+  call testify#assert#equals(pairify#find_pair('Map<string,vector<int>'), '>')
 endfunction
 call testify#it('pairify#find_pair should treat < without trailing space as angle bracket', function('s:TestFindPairAngleBrackets'))
 
